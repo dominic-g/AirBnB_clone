@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-'''This module creates a Place class'''
+'''This module creates a AirBnb Location class'''
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    '''Class for managing place objects'''
+    '''Class for managing location objects'''
     city_id = ""
     user_id = ""
     name = ""
@@ -18,5 +18,5 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
-        '''Initializes attributes for the place class'''
+        '''Initializes attributes for the location class'''
         super().__init__(*args, **kwargs)

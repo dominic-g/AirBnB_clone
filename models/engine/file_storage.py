@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-"""This module is the file storage class"""
+"""This module is the AirBnB File_Storage class"""
 import json
 import os
 import datetime
 
 
 class FileStorage():
-    """Class for storing and retrieving data"""
+    """Class for CRUD data"""
     __file_path = "file.json"
     __objects = {}
 
@@ -26,13 +26,11 @@ class FileStorage():
 
     def save(self):
         ''' serializes __objects to the JSON file (path: __file_path)'''
-        # serialize the object by first converting it to a dictionary
         object_dict = {}
 
         for key in self.__objects.keys():
             if type(self.__objects[key]) != dict:
                 object_dict[key] = self.__objects[key].to_dict()
-        # convert the dictionary object to json and write to the file
         file_name = self.__file_path
         with open(file_name, "w", encoding="utf-8") as jsonfile:
             # json.dump(object_dict, jsonfile)

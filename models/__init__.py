@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-'''Initializes the package'''
-# from models.base_model import BaseModel
+'''Initializes the AIRBNB package'''
 from models.engine import file_storage
 
 
