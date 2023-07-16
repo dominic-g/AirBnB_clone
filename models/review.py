@@ -1,27 +1,14 @@
 #!/usr/bin/python3
-# File: review.py
-# Main Authors: Dominic Gitau
-# email(s): <dominicnjoroge1@gmail.com>
-
-#           
-
-""" Review module for the HBNB project """
-import os
-from sqlalchemy import Column, ForeignKey, String
-from sqlalchemy.orm import relationship
-
-from models.base_model import BaseModel, Base
+'''This module creates a Review class'''
+from models.base_model import BaseModel
 
 
-class Review(BaseModel, Base):
-    """ Review classto store review information """
-    __tablename__ = 'reviews'
-    place_id = Column(
-        String(60), ForeignKey('places.id'), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
-    user_id = Column(
-        String(60), ForeignKey('users.id'), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
-    text = Column(
-        String(1024), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+class Review(BaseModel):
+    '''Class for managing review objects'''
+    place_id = ""
+    user_id = ""
+    text = ""
+
+    def __init__(self, *args, **kwargs):
+        '''Initializes attributes for the review class'''
+        super().__init__(*args, **kwargs)

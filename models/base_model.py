@@ -1,65 +1,54 @@
 #!/usr/bin/python3
-# File: base_model.py
-# Main Authors: Dominic Gitau
-# email(s): <dominicnjoroge1@gmail.com>
-#           
-
-"""This module defines a base class for all models in our airbnb clone"""
-import os
+"""This script is the base model"""
 import uuid
-from datetime import datetime
-from sqlalchemy import Column, String, DATETIME
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+import datetime
+from models import storage
 
 
-class BaseModel:
-    """A base class for all models"""
-    id = Column(String(60), nullable=False, primary_key=True, unique=True)
-    created_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
+class BaseModel():
+    ''''Class from which all other classes will inherit'''
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
-        if not kwargs:
+        '''Initializes instance attributes'''
+
+        if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+            storage.new(self)
         else:
-            for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ('created_at', 'updated_at'):
-                        setattr(self, key, datetime.fromisoformat(value))
-                    else:
-                        setattr(self, key, value)
-            if not hasattr(kwargs, 'id'):
-                setattr(self, 'id', str(uuid.uuid4()))
-            if not hasattr(kwargs, 'created_at'):
-                setattr(self, 'created_at', datetime.now())
-            if not hasattr(kwargs, 'updated_at'):
-                setattr(self, 'updated_at', datetime.now())
+            for key in kwargs.keys():
+                # check and escape the __class__ key
+                if key == "__class__":
+                    continue
+                else:
+                    # check and change the format for updated_at & created_at
+                    if key == "updated_at" or key == "created_at":
+                        kwargs[key] = datetime.datetime.strptime(
+                            kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")
+                    # set the attributes of the instance
+                    setattr(self, key, kwargs[key])
+                # self.key = kwargs[key]
+                # print(f"{key}: {kwargs[key]}")
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        '''Returns official string representation'''
+        return (f"[{self.__class__.__name__}] ({self.id}) \
+{str(self.__dict__)}")
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.new(self)
+        '''updates the public instance attribute updated_at'''
         storage.save()
+        self.updated_at = datetime.datetime.now()
 
     def to_dict(self):
-        """Convert instance into dict format"""
-        res = {}
-        for key, value in self.__dict__.items():
-            if key != '_sa_instance_state':
-                if isinstance(value, datetime):
-                    res[key] = value.isoformat()
-                else:
-                    res[key] = value
-        res['__class__'] = self.__class__.__name__
-        return res
+        '''returns a dictionary containing all keys/values of __dict__'''
+        object_dict = {}
+        for key in self.__dict__.keys():
+            if key not in ('created_at', 'updated_at'):
+                object_dict[key] = self.__dict__[key]
+            else:
+                object_dict[key] = datetime.datetime.isoformat(
+                    self.__dict__[key])
+        object_dict['__class__'] = self.__class__.__name__
+        return (object_dict)

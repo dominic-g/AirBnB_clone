@@ -1,37 +1,12 @@
 #!/usr/bin/python3
-# File: state.py
-# Main Authors: Dominic Gitau
-# email(s): <dominicnjoroge1@gmail.com>
-#
-
-""" State Module for HBNB project """
-import os
-from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-
-from models.base_model import BaseModel, Base
-from models.city import City
+'''This module creates a User class'''
+from models.base_model import BaseModel
 
 
-class State(BaseModel, Base):
-    """ State class """
-    __tablename__ = 'states'
-    name = Column(
-        String(128), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship(
-            'City',
-            cascade='all, delete, delete-orphan',
-            backref='state'
-        )
-    else:
-        @property
-        def cities(self):
-            """Returns the cities in this State"""
-            from models import storage
-            cities_in_state = []
-            for value in storage.all(City).values():
-                if value.state_id == self.id:
-                    cities_in_state.append(value)
-            return cities_in_state
+class State(BaseModel):
+    '''Class for managing state objects'''
+    name = ""
+
+    def __init__(self, *args, **kwargs):
+        '''Initializes attributes for the State class'''
+        super().__init__(*args, **kwargs)
