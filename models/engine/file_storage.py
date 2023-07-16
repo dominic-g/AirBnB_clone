@@ -10,7 +10,7 @@ import os
 from importlib import import_module
 
 
-class FileStorage: 
+class FileStorage:
     """This class manages storage of airbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
