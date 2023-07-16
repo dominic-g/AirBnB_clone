@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # File: file_storage.py
-# Main Authors: Dominic Gitau - Priscah Monicah
+# Main Authors: Dominic Gitau 
 # email(s): <dominicnjoroge1@gmail.com>
-#           <prisca2920@gmail.com>
 #           
 
 """This module defines a class to manage file storage for airbnb clone"""

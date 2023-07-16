@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # File: base_model.py
-# Main Authors: Dominic Gitau - Priscah Monicah
+# Main Authors: Dominic Gitau
 # email(s): <dominicnjoroge1@gmail.com>
-#           <prisca2920@gmail.com>
 #           
 
 """This module defines a base class for all models in our airbnb clone"""
